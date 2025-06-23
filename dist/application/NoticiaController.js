@@ -1,0 +1,107 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.NoticiasController = void 0;
+const NoticiasRep_1 = require("../repository/NoticiasRep");
+const data_source_1 = require("../data-source");
+class NoticiasController {
+    async create(req, res) {
+        const { title, thumbnail, descricao, cidade } = req.body;
+        if (!title || !thumbnail || !descricao || !cidade) {
+            return res.status(400).json({ message: "Fields with * required." });
+        }
+        try {
+            const unique = await NoticiasRep_1.NoticiaRep.findOneBy({ title: title });
+            if (unique) {
+                return res.status(400).json({ message: 'News already registered for city.' });
+            }
+            const seqResult = await data_source_1.AppDataSource.query(`SELECT SEQ_NOTICIA.NEXTVAL AS SEQ FROM DUAL`);
+            const nextSeq = seqResult[0].SEQ;
+            const noticia = NoticiasRep_1.NoticiaRep.create({
+                seq: nextSeq,
+                title,
+                descricao,
+                thumbnail,
+                cidadeId: cidade
+            });
+            await NoticiasRep_1.NoticiaRep.save(noticia);
+            return res.status(201).json('Registered successfully!');
+        }
+        catch (error) {
+            console.error("Creating user error:", error);
+            return res.status(500).json({ message: 'Creating error', error: error });
+        }
+        finally {
+            console.log('Registered successfully!');
+        }
+    }
+    async update(req, res) {
+        const { seq, title, thumbnail, descricao, cidade } = req.body;
+        if (!seq || !title || !thumbnail || !descricao || !cidade) {
+            return res.status(400).json({ message: "Fields with * required." });
+        }
+        try {
+            const noticia = await NoticiasRep_1.NoticiaRep.findOne({
+                where: { seq }
+            });
+            if (!noticia) {
+                return res.status(404).json({ message: "Not found." });
+            }
+            if (noticia.title)
+                noticia.title = title;
+            if (noticia.thumbnail)
+                noticia.thumbnail = thumbnail;
+            if (noticia.descricao)
+                noticia.descricao = descricao;
+            await NoticiasRep_1.NoticiaRep.save(noticia);
+            return res.status(200).json('Updated successfully!');
+        }
+        catch (error) {
+            return res.status(500).json({ message: "Error updating user", error: error });
+        }
+        finally {
+            console.log("User update completed.");
+        }
+    }
+    async delete(req, res) {
+        try {
+            const { seq } = req.params;
+            if (!seq) {
+                return res.status(400).json({ message: "Mandatory ID." });
+            }
+            const noticia = await NoticiasRep_1.NoticiaRep.findOne({ where: { seq: Number(seq) } });
+            if (!noticia) {
+                return res.status(404).json({ message: "Not found." });
+            }
+            await NoticiasRep_1.NoticiaRep.delete({ seq: Number(seq) });
+            return res.status(200).json({ message: "Successfully deleted." });
+        }
+        catch (error) {
+            console.error("Error deleting user:", error);
+            return res.status(500).json({ message: "Error deleting user", error: error });
+        }
+    }
+    async findall(req, res) {
+        try {
+            const { cidade } = req.query;
+            if (!cidade) {
+                return res.status(400).json({ message: "Select your city * required." });
+            }
+            const condition = {};
+            condition.cidade = { seq: Number(cidade) };
+            const noticias = await NoticiasRep_1.NoticiaRep.find({
+                relations: ['cidade'],
+                where: condition,
+                order: { cadastrado: 'ASC' },
+            });
+            if (!noticias || noticias.length === 0) {
+                return res.status(404).json({ message: "No records found." });
+            }
+            return res.json(noticias);
+        }
+        catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Error fetching users", error: error });
+        }
+    }
+}
+exports.NoticiasController = NoticiasController;
