@@ -1,9 +1,11 @@
 import express, { Application } from 'express';
 import { AppDataSource } from './data-source';
 import routes from './routes';
+import cron from 'node-cron';
+import { cronusNoticias } from './services/cronusNoticias';
 var cors = require('cors');
 
-AppDataSource.initialize().then(() => {
+AppDataSource.initialize().then(async () => {
   const app: Application = express();
   app.use(express.json());
   
@@ -22,6 +24,11 @@ AppDataSource.initialize().then(() => {
   });
   app.use(cors())
   app.use(routes); 
+
+  await cronusNoticias();
+  cron.schedule('0 */4 * * *', async () => {
+    await cronusNoticias();
+  });
   
   return app.listen(process.env.PORT || 3333);
 }).catch(() => {
