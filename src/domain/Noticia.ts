@@ -21,17 +21,20 @@ export class Noticia {
   @Column({ name: 'THUMBNAIL', type: 'varchar2', length: 255 })
   thumbnail: string;
 
-  @Column({ name: 'DESCRICAO', type: 'clob' })
-  descricao: string;
+  @Column({ name: 'DESCRIPTION', type: 'clob' })
+  description: string;
 
-  @Column({ name: 'CIDADE_ID', type: 'number', precision: 19, scale: 2 })
-   @Exclude()
-  cidadeId: number;
+  @Column({ name: 'WEBLINK', type: 'varchar2', length: 255 })
+  weblink: string;
 
-  @CreateDateColumn({ name: 'CADASTRADO', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  cadastrado: Date;
+  @Column({ name: 'CITY_ID', type: 'number', precision: 19, scale: 2 })
+  @Exclude()
+  cityId: number;
+
+  @CreateDateColumn({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  publish: Date;
 
   @ManyToOne(() => Cidade)
-  @JoinColumn({ name: 'CIDADE_ID', referencedColumnName: 'seq' })
+  @JoinColumn({ name: 'CITY_ID', referencedColumnName: 'seq' })
   cidade: Cidade;
 }

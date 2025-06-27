@@ -5,8 +5,8 @@ import { Request, Response } from 'express';
 
 export class NoticiasController {
     async create(req: Request, res: Response) {
-        const { title, thumbnail, descricao, cidade } = req.body;
-        if (!title || !thumbnail || ! descricao || ! cidade) {
+        const { title, thumbnail, description, weblink, cityId } = req.body;
+        if (!title || !thumbnail || !description || !weblink || !cityId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -21,9 +21,10 @@ export class NoticiasController {
             const noticia = NoticiaRep.create({
                 seq: nextSeq,
                 title,
-                descricao,
+                weblink,
                 thumbnail,
-                cidadeId: cidade
+                description,
+                cityId: cityId
             });
 
             await NoticiaRep.save(noticia);
@@ -37,8 +38,8 @@ export class NoticiasController {
     }
 
     async update(req: Request, res: Response) {
-         const { seq, title, thumbnail, descricao, cidade } = req.body;
-        if ( !seq || !title || !thumbnail || ! descricao || ! cidade) {
+         const { seq, title, thumbnail, description, weblink, cityId } = req.body;
+        if ( !seq || !title || !thumbnail || ! description || !weblink || ! cityId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
 
@@ -50,10 +51,10 @@ export class NoticiasController {
         if (!noticia) {
             return res.status(404).json({ message: "Not found." });
         }
-        if(noticia.title) noticia.title = title;
+        if(noticia.title)     noticia.title = title;
+        if(noticia.weblink)   noticia.weblink = weblink;
         if(noticia.thumbnail) noticia.thumbnail = thumbnail;
-        if(noticia.descricao) noticia.descricao = descricao;   
-
+        if(noticia.description) noticia.description = description;   
         await NoticiaRep.save(noticia);
 
         return res.status(200).json('Updated successfully!');
@@ -102,7 +103,7 @@ export class NoticiasController {
             const noticias = await NoticiaRep.find({
                 relations: ['cidade'],
                 where: condition,
-                order: { cadastrado: 'ASC' },
+                order: { publish: 'ASC' },
             });
 
             if (!noticias || noticias.length === 0) {

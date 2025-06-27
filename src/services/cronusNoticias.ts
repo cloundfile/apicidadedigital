@@ -31,15 +31,15 @@ export async function cronusNoticias() {
         const { data: detailHtml } = await axios.get(noticia.url);
         const $detail = cheerio.load(detailHtml);
 
-        const image = $detail('img.img-responsive.card-img-top').attr('src') || '';
-        const content = $detail('.post-content').text().trim();
+        const thumbnail = $detail('img.img-responsive.card-img-top').attr('src') || '';
+        const description = $detail('.post-content').text().trim();
 
         const novaNoticia = NoticiaRep.create({
+          cityId: 1,
           title: noticia.title,
-          thumbnail: image,
-          descricao: content,
-          cidadeId: 1,
-          cadastrado: new Date(),
+          thumbnail: thumbnail,
+          description: description,
+          publish: new Date(),
         });
 
         await NoticiaRep.save(novaNoticia);
