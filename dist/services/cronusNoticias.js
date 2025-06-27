@@ -58,7 +58,7 @@ async function cronusNoticias() {
                 });
             }
         });
-        for (const noticia of noticias.slice(0, 10)) {
+        for (const noticia of noticias) {
             try {
                 const { data: detailHtml } = await axios_1.default.get(noticia.weblink);
                 const $detail = cheerio.load(detailHtml);
