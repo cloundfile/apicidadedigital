@@ -92,17 +92,14 @@ export class NoticiasController {
 
     async findall(req: Request, res: Response) {
         try {
-            const { cidade } = req.query;
-            if (!cidade) {
-                return res.status(400).json({ message: "Select your city * required." });
+            const seq = Number(req.params.cidade);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
-
-            const condition: any = {};
-            condition.cidade = { seq: Number(cidade) };
 
             const noticias = await NoticiaRep.find({
                 relations: ['cidade'],
-                where: condition,
+                where: { cidadeId: seq },
                 order: { publish: 'ASC' }
             });
 
