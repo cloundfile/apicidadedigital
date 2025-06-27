@@ -1,40 +1,30 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  CreateDateColumn,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import { Cidade } from './Cidade';
-import { Exclude } from 'class-transformer';
 
-@Entity('NOTICIA')
+@Entity({ name: 'NOTICIA' })
 export class Noticia {
-
-  @PrimaryColumn({ name: 'SEQ', type: 'number', precision: 19, scale: 2 })
+  @PrimaryColumn({ name: 'SEQ', type: 'number' })
   seq: number;
 
   @Column({ name: 'TITLE', type: 'varchar2', length: 255 })
   title: string;
 
-  @Column({ name: 'THUMBNAIL', type: 'varchar2', length: 255 })
+  @Column({ name: 'WEBLINK', type: 'varchar2', length: 255 })
+  weblink: string;
+
+  @Column({ name: 'THUMBNAIL', type: 'varchar2', length: 255, nullable: true })
   thumbnail: string;
 
   @Column({ name: 'DESCRIPTION', type: 'clob' })
   description: string;
 
-  @Column({ name: 'WEBLINK', type: 'varchar2', length: 255 })
-  weblink: string;
-
-  @Column({ name: 'CITY_ID', type: 'number', precision: 19, scale: 2 })
-  @Exclude()
-  cityId: number;
+  @Column({ name: 'CIDADE', type: 'number' })
+  cidadeId: number;
 
   @CreateDateColumn({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   publish: Date;
 
   @ManyToOne(() => Cidade)
-  @JoinColumn({ name: 'CITY_ID', referencedColumnName: 'seq' })
+  @JoinColumn({ name: 'CIDADE' })
   cidade: Cidade;
 }

@@ -20,7 +20,10 @@ export class UsuarioController {
             }
 
             const seqResult = await AppDataSource.query(`SELECT SEQ_USUARIO.NEXTVAL AS SEQ FROM DUAL`);
-            const nextSeq = seqResult[0].SEQ;
+            const nextSeq = Number(seqResult?.[0]?.SEQ);
+            if (!nextSeq) {
+                return res.status(500).json({ message: "Error retrieving sequence." });
+            }
 
             const roleEntities = await Promise.all(
                 roles.map(async (item: { id: number }) => {
@@ -105,10 +108,9 @@ export class UsuarioController {
 
     async delete(req: Request, res: Response) {
         try {
-            const { seq } = req.params;
-
-            if (!seq) {
-                return res.status(400).json({ message: "Mandatory ID." });
+            const seq = Number(req.params.seq);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
 
             const seqNum = Number(seq);
@@ -116,7 +118,7 @@ export class UsuarioController {
                 return res.status(400).json({ message: "Invalid ID format." });
             }
 
-            const usuario = await UsuarioRep.findOne({ where: { seq: seqNum } });
+            const usuario = await UsuarioRep.findOne({ where: { seq } });
 
             if (!usuario) {
                 return res.status(404).json({ message: "User not found." });

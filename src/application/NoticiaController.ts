@@ -5,8 +5,8 @@ import { Request, Response } from 'express';
 
 export class NoticiasController {
     async create(req: Request, res: Response) {
-        const { title, thumbnail, description, weblink, cityId } = req.body;
-        if (!title || !thumbnail || !description || !weblink || !cityId) {
+        const { title, thumbnail, description, weblink, cidadeId } = req.body;
+        if (!title || !thumbnail || !description || !weblink || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -24,7 +24,7 @@ export class NoticiasController {
                 weblink,
                 thumbnail,
                 description,
-                cityId: cityId
+                cidadeId: cidadeId
             });
 
             await NoticiaRep.save(noticia);
@@ -38,8 +38,8 @@ export class NoticiasController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, title, thumbnail, description, weblink, cityId } = req.body;
-        if (!seq || !title || !thumbnail || !description || !weblink || !cityId) {
+        const { seq, title, thumbnail, description, weblink, cidadeId } = req.body;
+        if (!seq || !title || !thumbnail || !description || !weblink || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
 
@@ -55,7 +55,7 @@ export class NoticiasController {
             noticia.weblink = weblink;
             noticia.thumbnail = thumbnail;
             noticia.description = description;
-            noticia.cityId = cityId;
+            noticia.cidadeId = cidadeId;
             await NoticiaRep.save(noticia);
 
             return res.status(200).json('Updated successfully!');
@@ -69,13 +69,12 @@ export class NoticiasController {
 
     async delete(req: Request, res: Response) {
         try {
-            const { seq } = req.params;
-
-            if (!seq) {
-                return res.status(400).json({ message: "Mandatory ID." });
+            const seq = Number(req.params.seq);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
 
-            const noticia = await NoticiaRep.findOne({ where: { seq: Number(seq) } });
+            const noticia = await NoticiaRep.findOne({ where: { seq } });
 
             if (!noticia) {
                 return res.status(404).json({ message: "Not found." });

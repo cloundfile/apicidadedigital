@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryColumn,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn
-} from 'typeorm';
+import { Entity, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import { Usuario } from './Usuario';
 import { Role } from './Role';
 
@@ -17,11 +11,11 @@ export class UsuarioRole {
   roleSeq: number;
 
   @CreateDateColumn({
-    name: 'CADASTRADO',
+    name: 'PUBLISH',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP'
   })
-  cadastrado: Date;
+  publish: Date;
 
   @ManyToOne(() => Usuario)
   @JoinColumn({ name: 'USUARIO_SEQ', referencedColumnName: 'seq' })

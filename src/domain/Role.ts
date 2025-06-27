@@ -17,11 +17,11 @@ export class Role {
   descricao: string;
 
   @CreateDateColumn({
-    name: 'CADASTRADO',
+    name: 'PUBLISH',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP'
   })
-  cadastrado: Date;
+  publish: Date;
 
   @ManyToMany(() => Usuario, usuario => usuario.roles)
   @Exclude()

@@ -45,7 +45,7 @@ export async function cronusNoticias() {
         const description = $detail('.post-content').text().trim();
 
         const novaNoticia = NoticiaRep.create({
-          cityId: 1,
+          cidadeId: 1,
           title: noticia.title,
           thumbnail: thumbnail,
           description: description,

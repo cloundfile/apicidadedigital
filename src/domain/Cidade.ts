@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn,  CreateDateColumn, } from 'typeorm';
 import { Estado } from './Estado';
 
 @Entity('CIDADE')
@@ -23,8 +16,8 @@ export class Cidade {
   @Column({ name: 'DOMINIO', type: 'varchar2', length: 255 })
   dominio: string;
 
-  @CreateDateColumn({ name: 'CADASTRADO', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  cadastrado: Date;
+  @CreateDateColumn({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  publish: Date;
 
   @ManyToOne(() => Estado)
   @JoinColumn({ name: 'ESTADO_ID', referencedColumnName: 'seq' })

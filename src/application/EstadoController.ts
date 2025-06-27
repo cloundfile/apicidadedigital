@@ -39,6 +39,9 @@ export class EstadoController {
         if ( !seq ||  !descricao || !sigla) {
             return res.status(400).json({ message: "Fields with * required." });
         }
+        if (isNaN(seq)) {
+            return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
+        }
 
         try {
         const estado = await EstadoRep.findOne({
@@ -64,19 +67,18 @@ export class EstadoController {
 
     async delete(req: Request, res: Response) {
         try {
-            const { seq } = req.params;
-
-            if (!seq) {
-                return res.status(400).json({ message: "Mandatory ID." });
+            const seq = Number(req.params.seq);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
 
-            const estado = await EstadoRep.findOne({ where: { seq: Number(seq) } });
+            const estado = await EstadoRep.findOne({ where: { seq } });
 
             if (!estado) {
                 return res.status(404).json({ message: "Not found." });
             }
 
-            await EstadoRep.delete({ seq: Number(seq) });
+            await EstadoRep.delete({ seq });
 
             return res.status(200).json({ message: "Successfully deleted." });
 

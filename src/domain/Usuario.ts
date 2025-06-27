@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  CreateDateColumn,
-  ManyToMany,
-  JoinTable
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Role } from './Role';
 
 @Entity('USUARIO')
@@ -23,11 +16,11 @@ export class Usuario {
   telefone: number;
 
   @CreateDateColumn({
-    name: 'CADASTRADO',
+    name: 'PUBLISH',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP'
   })
-  cadastrado: Date;
+  publish: Date;
 
   @ManyToMany(() => Role)
   @JoinTable({

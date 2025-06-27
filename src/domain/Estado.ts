@@ -1,9 +1,4 @@
-import { 
-  Entity, 
-  PrimaryColumn, 
-  Column, 
-  CreateDateColumn, 
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('ESTADO')
 export class Estado {
@@ -17,7 +12,7 @@ export class Estado {
   @Column({ name: 'DESCRICAO', type: 'varchar2', length: 255 })
   descricao: string;
 
-  @CreateDateColumn({ name: 'CADASTRADO', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  cadastrado: Date;
+  @CreateDateColumn({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  publish: Date;
 }
 
