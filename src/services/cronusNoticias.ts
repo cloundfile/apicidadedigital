@@ -45,8 +45,7 @@ export async function cronusNoticias() {
         await NoticiaRep.save(novaNoticia);
         console.log(`✅ Notícia salva: ${noticia.title}`);
       } catch (err) {
-        const error = err as Error;
-        console.error('failed to register news: ', error.message);        
+        const error = err as Error;      
       }
     }
   } catch (err) {
