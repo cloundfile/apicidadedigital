@@ -60,9 +60,16 @@ async function cronusNoticias() {
         });
         for (const noticia of noticias) {
             try {
+                const exists = await NoticiasRep_1.NoticiaRep.findOneBy({ title: noticia.title });
+                if (exists) {
+                    continue;
+                }
                 const { data: detailHtml } = await axios_1.default.get(noticia.weblink);
                 const $detail = cheerio.load(detailHtml);
-                const thumbnail = $detail('img.img-responsive.card-img-top').attr('src') || '';
+                const rawThumbnail = $detail('img.img-responsive.card-img-top').attr('src') || '';
+                const thumbnail = rawThumbnail.startsWith('http')
+                    ? rawThumbnail
+                    : `${BASE_URL}${rawThumbnail}`;
                 const description = $detail('.post-content').text().trim();
                 const novaNoticia = NoticiasRep_1.NoticiaRep.create({
                     cityId: 1,
@@ -76,11 +83,11 @@ async function cronusNoticias() {
                 console.log(`✅ Notícia salva: ${noticia.title}`);
             }
             catch (err) {
-                const error = err;
+                console.error(`❌ Falha ao salvar notícia: ${noticia.title}`, err);
             }
         }
     }
     catch (err) {
-        console.error('Cronus failed to sync.');
+        console.error('Cronus falhou ao sincronizar.', err);
     }
 }

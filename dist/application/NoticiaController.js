@@ -47,14 +47,11 @@ class NoticiasController {
             if (!noticia) {
                 return res.status(404).json({ message: "Not found." });
             }
-            if (noticia.title)
-                noticia.title = title;
-            if (noticia.weblink)
-                noticia.weblink = weblink;
-            if (noticia.thumbnail)
-                noticia.thumbnail = thumbnail;
-            if (noticia.description)
-                noticia.description = description;
+            noticia.title = title;
+            noticia.weblink = weblink;
+            noticia.thumbnail = thumbnail;
+            noticia.description = description;
+            noticia.cityId = cityId;
             await NoticiasRep_1.NoticiaRep.save(noticia);
             return res.status(200).json('Updated successfully!');
         }
@@ -94,7 +91,7 @@ class NoticiasController {
             const noticias = await NoticiasRep_1.NoticiaRep.find({
                 relations: ['cidade'],
                 where: condition,
-                order: { publish: 'ASC' },
+                order: { publish: 'ASC' }
             });
             if (!noticias || noticias.length === 0) {
                 return res.status(404).json({ message: "No records found." });
@@ -103,7 +100,7 @@ class NoticiasController {
         }
         catch (error) {
             console.error(error);
-            return res.status(500).json({ message: "Error fetching users", error: error });
+            return res.status(500).json({ message: "Error fetching news", error: error });
         }
     }
 }
