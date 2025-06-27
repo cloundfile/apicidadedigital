@@ -38,26 +38,27 @@ export class NoticiasController {
     }
 
     async update(req: Request, res: Response) {
-         const { seq, title, thumbnail, description, weblink, cityId } = req.body;
-        if ( !seq || !title || !thumbnail || ! description || !weblink || ! cityId) {
+        const { seq, title, thumbnail, description, weblink, cityId } = req.body;
+        if (!seq || !title || !thumbnail || !description || !weblink || !cityId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
 
         try {
-        const noticia = await NoticiaRep.findOne({
-            where: { seq }
-        });
+            const noticia = await NoticiaRep.findOne({
+                where: { seq }
+            });
 
-        if (!noticia) {
-            return res.status(404).json({ message: "Not found." });
-        }
-        if(noticia.title)     noticia.title = title;
-        if(noticia.weblink)   noticia.weblink = weblink;
-        if(noticia.thumbnail) noticia.thumbnail = thumbnail;
-        if(noticia.description) noticia.description = description;   
-        await NoticiaRep.save(noticia);
+            if (!noticia) {
+                return res.status(404).json({ message: "Not found." });
+            }
+            noticia.title = title;
+            noticia.weblink = weblink;
+            noticia.thumbnail = thumbnail;
+            noticia.description = description;
+            noticia.cityId = cityId;
+            await NoticiaRep.save(noticia);
 
-        return res.status(200).json('Updated successfully!');
+            return res.status(200).json('Updated successfully!');
 
         } catch (error) {
             return res.status(500).json({ message: "Error updating user", error: error });
@@ -93,7 +94,7 @@ export class NoticiasController {
     async findall(req: Request, res: Response) {
         try {
             const { cidade } = req.query;
-            if ( !cidade ) {
+            if (!cidade) {
                 return res.status(400).json({ message: "Select your city * required." });
             }
 
@@ -103,7 +104,7 @@ export class NoticiasController {
             const noticias = await NoticiaRep.find({
                 relations: ['cidade'],
                 where: condition,
-                order: { publish: 'ASC' },
+                order: { publish: 'ASC' }
             });
 
             if (!noticias || noticias.length === 0) {
@@ -114,7 +115,7 @@ export class NoticiasController {
 
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: "Error fetching users", error: error });
+            return res.status(500).json({ message: "Error fetching news", error: error });
         }
     }
 }
