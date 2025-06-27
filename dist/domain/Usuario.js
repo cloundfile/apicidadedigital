@@ -33,12 +33,12 @@ __decorate([
 ], Usuario.prototype, "telefone", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
-        name: 'CADASTRADO',
+        name: 'PUBLISH',
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP'
     }),
     __metadata("design:type", Date)
-], Usuario.prototype, "cadastrado", void 0);
+], Usuario.prototype, "publish", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => Role_1.Role),
     (0, typeorm_1.JoinTable)({

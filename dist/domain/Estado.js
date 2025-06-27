@@ -27,9 +27,9 @@ __decorate([
     __metadata("design:type", String)
 ], Estado.prototype, "descricao", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)({ name: 'CADASTRADO', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], Estado.prototype, "cadastrado", void 0);
+], Estado.prototype, "publish", void 0);
 exports.Estado = Estado = __decorate([
     (0, typeorm_1.Entity)('ESTADO')
 ], Estado);

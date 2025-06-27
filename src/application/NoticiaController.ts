@@ -92,9 +92,9 @@ export class NoticiasController {
 
     async findall(req: Request, res: Response) {
         try {
-            const seq = Number(req.params.cidade);
+            const seq = Number(req.query.cidade);
             if (isNaN(seq)) {
-                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
+                return res.status(400).json({ message: "Invalid or missing 'cidade' parameter." });
             }
 
             const noticias = await NoticiaRep.find({

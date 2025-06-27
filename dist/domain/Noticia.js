@@ -12,12 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Noticia = void 0;
 const typeorm_1 = require("typeorm");
 const Cidade_1 = require("./Cidade");
-const class_transformer_1 = require("class-transformer");
 let Noticia = class Noticia {
 };
 exports.Noticia = Noticia;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)({ name: 'SEQ', type: 'number', precision: 19, scale: 2 }),
+    (0, typeorm_1.PrimaryColumn)({ name: 'SEQ', type: 'number' }),
     __metadata("design:type", Number)
 ], Noticia.prototype, "seq", void 0);
 __decorate([
@@ -25,7 +24,11 @@ __decorate([
     __metadata("design:type", String)
 ], Noticia.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'THUMBNAIL', type: 'varchar2', length: 255 }),
+    (0, typeorm_1.Column)({ name: 'WEBLINK', type: 'varchar2', length: 255 }),
+    __metadata("design:type", String)
+], Noticia.prototype, "weblink", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'THUMBNAIL', type: 'varchar2', length: 255, nullable: true }),
     __metadata("design:type", String)
 ], Noticia.prototype, "thumbnail", void 0);
 __decorate([
@@ -33,23 +36,18 @@ __decorate([
     __metadata("design:type", String)
 ], Noticia.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'WEBLINK', type: 'varchar2', length: 255 }),
-    __metadata("design:type", String)
-], Noticia.prototype, "weblink", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ name: 'CITY_ID', type: 'number', precision: 19, scale: 2 }),
-    (0, class_transformer_1.Exclude)(),
+    (0, typeorm_1.Column)({ name: 'CIDADE', type: 'number' }),
     __metadata("design:type", Number)
-], Noticia.prototype, "cityId", void 0);
+], Noticia.prototype, "cidadeId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], Noticia.prototype, "publish", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Cidade_1.Cidade),
-    (0, typeorm_1.JoinColumn)({ name: 'CITY_ID', referencedColumnName: 'seq' }),
+    (0, typeorm_1.JoinColumn)({ name: 'CIDADE', referencedColumnName: 'seq' }),
     __metadata("design:type", Cidade_1.Cidade)
 ], Noticia.prototype, "cidade", void 0);
 exports.Noticia = Noticia = __decorate([
-    (0, typeorm_1.Entity)('NOTICIA')
+    (0, typeorm_1.Entity)({ name: 'NOTICIA' })
 ], Noticia);

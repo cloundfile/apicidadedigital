@@ -26,12 +26,12 @@ __decorate([
 ], Role.prototype, "descricao", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
-        name: 'CADASTRADO',
+        name: 'PUBLISH',
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP'
     }),
     __metadata("design:type", Date)
-], Role.prototype, "cadastrado", void 0);
+], Role.prototype, "publish", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => Usuario_1.Usuario, usuario => usuario.roles),
     (0, class_transformer_1.Exclude)(),

@@ -72,7 +72,7 @@ async function cronusNoticias() {
                     : `${BASE_URL}${rawThumbnail}`;
                 const description = $detail('.post-content').text().trim();
                 const novaNoticia = NoticiasRep_1.NoticiaRep.create({
-                    cityId: 1,
+                    cidadeId: 1,
                     title: noticia.title,
                     thumbnail: thumbnail,
                     description: description,

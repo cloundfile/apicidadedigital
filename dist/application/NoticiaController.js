@@ -5,8 +5,8 @@ const NoticiasRep_1 = require("../repository/NoticiasRep");
 const data_source_1 = require("../data-source");
 class NoticiasController {
     async create(req, res) {
-        const { title, thumbnail, description, weblink, cityId } = req.body;
-        if (!title || !thumbnail || !description || !weblink || !cityId) {
+        const { title, thumbnail, description, weblink, cidadeId } = req.body;
+        if (!title || !thumbnail || !description || !weblink || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -22,7 +22,7 @@ class NoticiasController {
                 weblink,
                 thumbnail,
                 description,
-                cityId: cityId
+                cidadeId: cidadeId
             });
             await NoticiasRep_1.NoticiaRep.save(noticia);
             return res.status(201).json('Registered successfully!');
@@ -36,8 +36,8 @@ class NoticiasController {
         }
     }
     async update(req, res) {
-        const { seq, title, thumbnail, description, weblink, cityId } = req.body;
-        if (!seq || !title || !thumbnail || !description || !weblink || !cityId) {
+        const { seq, title, thumbnail, description, weblink, cidadeId } = req.body;
+        if (!seq || !title || !thumbnail || !description || !weblink || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -51,7 +51,7 @@ class NoticiasController {
             noticia.weblink = weblink;
             noticia.thumbnail = thumbnail;
             noticia.description = description;
-            noticia.cityId = cityId;
+            noticia.cidadeId = cidadeId;
             await NoticiasRep_1.NoticiaRep.save(noticia);
             return res.status(200).json('Updated successfully!');
         }
@@ -64,11 +64,11 @@ class NoticiasController {
     }
     async delete(req, res) {
         try {
-            const { seq } = req.params;
-            if (!seq) {
-                return res.status(400).json({ message: "Mandatory ID." });
+            const seq = Number(req.params.seq);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
-            const noticia = await NoticiasRep_1.NoticiaRep.findOne({ where: { seq: Number(seq) } });
+            const noticia = await NoticiasRep_1.NoticiaRep.findOne({ where: { seq } });
             if (!noticia) {
                 return res.status(404).json({ message: "Not found." });
             }
@@ -82,15 +82,13 @@ class NoticiasController {
     }
     async findall(req, res) {
         try {
-            const { cidade } = req.query;
-            if (!cidade) {
-                return res.status(400).json({ message: "Select your city * required." });
+            const seq = Number(req.query.cidade);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'cidade' parameter." });
             }
-            const condition = {};
-            condition.cidade = { seq: Number(cidade) };
             const noticias = await NoticiasRep_1.NoticiaRep.find({
                 relations: ['cidade'],
-                where: condition,
+                where: { cidadeId: seq },
                 order: { publish: 'ASC' }
             });
             if (!noticias || noticias.length === 0) {

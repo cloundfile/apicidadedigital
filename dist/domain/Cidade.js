@@ -32,9 +32,9 @@ __decorate([
     __metadata("design:type", String)
 ], Cidade.prototype, "dominio", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)({ name: 'CADASTRADO', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], Cidade.prototype, "cadastrado", void 0);
+], Cidade.prototype, "publish", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Estado_1.Estado),
     (0, typeorm_1.JoinColumn)({ name: 'ESTADO_ID', referencedColumnName: 'seq' }),

@@ -26,12 +26,12 @@ __decorate([
 ], UsuarioRole.prototype, "roleSeq", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
-        name: 'CADASTRADO',
+        name: 'PUBLISH',
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP'
     }),
     __metadata("design:type", Date)
-], UsuarioRole.prototype, "cadastrado", void 0);
+], UsuarioRole.prototype, "publish", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Usuario_1.Usuario),
     (0, typeorm_1.JoinColumn)({ name: 'USUARIO_SEQ', referencedColumnName: 'seq' }),

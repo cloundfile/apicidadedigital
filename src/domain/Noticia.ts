@@ -25,6 +25,6 @@ export class Noticia {
   publish: Date;
 
   @ManyToOne(() => Cidade)
-  @JoinColumn({ name: 'CIDADE' })
+  @JoinColumn({ name: 'CIDADE', referencedColumnName: 'seq' })
   cidade: Cidade;
 }

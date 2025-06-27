@@ -27,12 +27,14 @@ class RoleController {
     }
     async update(req, res) {
         try {
-            const { seq } = req.params;
-            const { descricao } = req.body;
-            if (!descricao) {
+            const { seq, descricao } = req.body;
+            if (!seq || !descricao) {
                 return res.status(400).json({ message: "Field 'descricao' is required." });
             }
-            const role = await RolesRep_1.RolesRep.findOne({ where: { seq: Number(seq) } });
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
+            }
+            const role = await RolesRep_1.RolesRep.findOne({ where: { seq } });
             if (!role) {
                 return res.status(404).json({ message: `Role with seq ${seq} not found.` });
             }
@@ -47,22 +49,22 @@ class RoleController {
     }
     async delete(req, res) {
         try {
-            const { seq } = req.params;
-            if (!seq) {
-                return res.status(400).json({ message: "Field (uuid) is required." });
+            const seq = Number(req.params.seq);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
-            const role = await RolesRep_1.RolesRep.findOne({ where: { seq: Number(seq) } });
+            const role = await RolesRep_1.RolesRep.findOne({ where: { seq } });
             if (!role) {
                 return res.status(404).json({ message: "Role not found." });
             }
             const userWithRole = await UsuarioRep_1.UsuarioRep.createQueryBuilder('usuario')
                 .leftJoin('usuario.roles', 'role')
-                .where('role.seq = :seq', { seq: Number(seq) })
+                .where('role.seq = :seq', { seq })
                 .getOne();
             if (userWithRole) {
                 return res.status(400).json({ message: "You cannot delete a role that is in use." });
             }
-            await RolesRep_1.RolesRep.delete({ seq: Number(seq) });
+            await RolesRep_1.RolesRep.delete({ seq });
             return res.status(200).json({ message: `Role deleted successfully.` });
         }
         catch (error) {

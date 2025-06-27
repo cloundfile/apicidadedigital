@@ -5,8 +5,8 @@ const CidadeRep_1 = require("../repository/CidadeRep");
 const data_source_1 = require("../data-source");
 class CidadeController {
     async create(req, res) {
-        const { descricao, estado, dominio } = req.body;
-        if (!descricao || !estado || dominio) {
+        const { descricao, estadoId, dominio } = req.body;
+        if (!descricao || !estadoId || dominio) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -20,7 +20,7 @@ class CidadeController {
                 seq: nextSeq,
                 dominio,
                 descricao,
-                estadoId: estado
+                estadoId: estadoId
             });
             await CidadeRep_1.CidadeRep.save(cidade);
             return res.status(201).json('Registered successfully!');
@@ -34,9 +34,12 @@ class CidadeController {
         }
     }
     async update(req, res) {
-        const { seq, descricao, estado } = req.body;
-        if (!seq || !descricao || !estado) {
+        const { seq, descricao, estadoId } = req.body;
+        if (!seq || !descricao || !estadoId) {
             return res.status(400).json({ message: "Fields with * required." });
+        }
+        if (isNaN(seq)) {
+            return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
         }
         try {
             const cidade = await CidadeRep_1.CidadeRep.findOne({
@@ -48,7 +51,7 @@ class CidadeController {
             if (cidade.descricao)
                 cidade.descricao = descricao;
             if (cidade.estadoId)
-                cidade.estadoId = estado;
+                cidade.estadoId = estadoId;
             await CidadeRep_1.CidadeRep.save(cidade);
             return res.status(200).json('Updated successfully!');
         }
@@ -61,9 +64,9 @@ class CidadeController {
     }
     async delete(req, res) {
         try {
-            const { seq } = req.params;
-            if (!seq) {
-                return res.status(400).json({ message: "Mandatory ID." });
+            const seq = Number(req.params.seq);
+            if (isNaN(seq)) {
+                return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
             const cidade = await CidadeRep_1.CidadeRep.findOne({ where: { seq: Number(seq) } });
             if (!cidade) {
