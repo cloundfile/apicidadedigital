@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const data_source_1 = require("./data-source");
 const routes_1 = __importDefault(require("./routes"));
+const node_cron_1 = __importDefault(require("node-cron"));
+const cronusNoticias_1 = require("./services/cronusNoticias");
 var cors = require('cors');
-data_source_1.AppDataSource.initialize().then(() => {
+data_source_1.AppDataSource.initialize().then(async () => {
     const app = (0, express_1.default)();
     app.use(express_1.default.json());
     app.use((req, res, next) => {
@@ -24,6 +26,10 @@ data_source_1.AppDataSource.initialize().then(() => {
     });
     app.use(cors());
     app.use(routes_1.default);
+    await (0, cronusNoticias_1.cronusNoticias)();
+    node_cron_1.default.schedule('0 */4 * * *', async () => {
+        await (0, cronusNoticias_1.cronusNoticias)();
+    });
     return app.listen(process.env.PORT || 3333);
 }).catch(() => {
     console.log("Could not connect to the database");
