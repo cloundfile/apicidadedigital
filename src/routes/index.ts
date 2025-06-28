@@ -4,8 +4,11 @@ import { Authentication } from '../application/Authentication';
 import { RoleController } from '../application/RoleController';
 import { required } from '../middlewares/login';
 import { Router } from 'express';
+
 import { CidadeController } from '../application/CidadeController';
 import { EstadoController } from '../application/EstadoController';
+import { VagasController } from '../application/VagasController';
+
 const routes = Router();
 
 const authentication = new Authentication();
@@ -15,6 +18,7 @@ const roles = new RoleController();
 const estados = new EstadoController();
 const cidades = new CidadeController();
 const noticias = new NoticiasController();
+const vagas = new VagasController();
 
 //Login authentication
 routes.post('/auth/login',          authentication.login);
@@ -49,4 +53,10 @@ routes.get('/v1/noticias/findall',   noticias.findall);
 routes.post('/v1/noticias/create',   required, noticias.create);
 routes.put('/v1/noticias/update',    required, noticias.update);
 routes.delete('/v1/noticias/delete', required, noticias.delete);
+
+//Vagas
+routes.get('/v1/vagas/findall',   vagas.findall);
+routes.post('/v1/vagas/create',   required, vagas.create);
+routes.put('/v1/vagas/update',    required, vagas.update);
+routes.delete('/v1/vagas/delete', required, vagas.delete);
 export default routes

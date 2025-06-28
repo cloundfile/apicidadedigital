@@ -1,11 +1,7 @@
 import express, { Application } from 'express';
 import { AppDataSource } from './data-source';
 import routes from './routes';
-import cron from 'node-cron';
 var cors = require('cors');
-
-import { cronusNoticias } from './services/cronusNoticias';
-import { cronusVagas } from './services/cronusVagas';
 
 AppDataSource.initialize().then(async () => {
   const app: Application = express();
@@ -26,13 +22,6 @@ AppDataSource.initialize().then(async () => {
   });
   app.use(cors())
   app.use(routes); 
-
-  await cronusNoticias();
-  await cronusVagas();
-  cron.schedule('0 */4 * * *', async () => {
-    await cronusNoticias();
-    await cronusVagas();
-  });
   
   return app.listen(process.env.PORT || 3331);
 }).catch(() => {
