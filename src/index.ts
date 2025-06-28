@@ -23,7 +23,7 @@ AppDataSource.initialize().then(async () => {
   app.use(cors())
   app.use(routes); 
   
-  return app.listen(process.env.PORT || 3331);
+  return app.listen(process.env.PORT || 3333);
 }).catch(() => {
   console.log("Could not connect to the database");
 });

@@ -8,6 +8,7 @@ const login_1 = require("../middlewares/login");
 const express_1 = require("express");
 const CidadeController_1 = require("../application/CidadeController");
 const EstadoController_1 = require("../application/EstadoController");
+const VagasController_1 = require("../application/VagasController");
 const routes = (0, express_1.Router)();
 const authentication = new Authentication_1.Authentication();
 const usuario = new UsuarioController_1.UsuarioController();
@@ -15,6 +16,7 @@ const roles = new RoleController_1.RoleController();
 const estados = new EstadoController_1.EstadoController();
 const cidades = new CidadeController_1.CidadeController();
 const noticias = new NoticiaController_1.NoticiasController();
+const vagas = new VagasController_1.VagasController();
 //Login authentication
 routes.post('/auth/login', authentication.login);
 //Usuario
@@ -42,4 +44,9 @@ routes.get('/v1/noticias/findall', noticias.findall);
 routes.post('/v1/noticias/create', login_1.required, noticias.create);
 routes.put('/v1/noticias/update', login_1.required, noticias.update);
 routes.delete('/v1/noticias/delete', login_1.required, noticias.delete);
+//Vagas
+routes.get('/v1/vagas/findall', vagas.findall);
+routes.post('/v1/vagas/create', login_1.required, vagas.create);
+routes.put('/v1/vagas/update', login_1.required, vagas.update);
+routes.delete('/v1/vagas/delete', login_1.required, vagas.delete);
 exports.default = routes;
