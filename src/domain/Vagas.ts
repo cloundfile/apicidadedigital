@@ -12,7 +12,7 @@ export class Vagas {
     @Column({ name: 'QUANTIDADE', type: 'number' })
     quantidade: number;     
 
-    @Column({ name: 'REQUISITOS', type: 'varchar', length: 255 })
+    @Column({ name: 'REQUISITOS', type: 'clob' })
     requisitos: string;
 
     @Column({ name: 'CIDADE', type: 'number' })

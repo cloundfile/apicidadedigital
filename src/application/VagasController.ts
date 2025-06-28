@@ -1,7 +1,6 @@
-import { Request, Response } from 'express';
-
-import { AppDataSource } from '../data-source';
 import { VagaRep } from '../repository/VagasRep';
+import { AppDataSource } from '../data-source';
+import { Request, Response } from 'express';
 
 export class VagasController {
     async create(req: Request, res: Response) {
