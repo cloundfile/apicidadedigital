@@ -28,12 +28,13 @@ AppDataSource.initialize().then(async () => {
   app.use(routes); 
 
   await cronusNoticias();
+  await cronusVagas();
   cron.schedule('0 */4 * * *', async () => {
     await cronusNoticias();
     await cronusVagas();
   });
   
-  return app.listen(process.env.PORT || 3333);
+  return app.listen(process.env.PORT || 3331);
 }).catch(() => {
   console.log("Could not connect to the database");
 });
