@@ -59,7 +59,6 @@ export async function cronusVagas() {
           quantidade,
           requisitos,
         });
-        console.log(`Salvando vaga no banco: ${cargo} - Quantidade: ${quantidade}`);
         await VagaRep.save(novaVaga);
         console.log(`✅ Vaga salva: ${cargo}`);
       } catch (err) {
