@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 export class CidadeController {
     async create(req: Request, res: Response) {
         const { descricao, estadoId, dominio } = req.body;
-        if (!descricao || !estadoId || dominio) {
+        if (!descricao || !estadoId || !dominio) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -36,8 +36,8 @@ export class CidadeController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, descricao, estadoId } = req.body;
-        if ( !seq ||  !descricao || !estadoId) {
+        const { seq, descricao, dominio, estadoId } = req.body;
+        if ( !seq ||  !descricao || !dominio || !estadoId) {
             return res.status(400).json({ message: "Fields with * required." });
         }        
         if (isNaN(seq)) {
