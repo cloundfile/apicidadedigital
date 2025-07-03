@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Cidade } from './Cidade';
 import { Servico } from './Servico';
 
@@ -22,7 +22,7 @@ export class Emprego {
     @Column({ name: 'CIDADE', type: 'number' })
     cidadeId: number;
 
-    @ManyToOne(() => Cidade)
+    @ManyToOne(() => Servico)
     @JoinColumn({ name: 'SERVICO', referencedColumnName: 'seq' })
     servico: Servico;
 
@@ -30,6 +30,9 @@ export class Emprego {
     @JoinColumn({ name: 'CIDADE', referencedColumnName: 'seq' })
     cidade: Cidade;
     
+    @UpdateDateColumn({ name: 'FECHADA', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    fechada: Date;
+
     @CreateDateColumn({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     publish: Date;
 }
