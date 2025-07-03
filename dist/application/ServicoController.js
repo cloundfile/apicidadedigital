@@ -5,8 +5,8 @@ const ServicoRep_1 = require("../repository/ServicoRep");
 const data_source_1 = require("../data-source");
 class ServicoController {
     async create(req, res) {
-        const { title, icone, cidade } = req.body;
-        if (!title || !icone || !cidade) {
+        const { title, icone, cidadeId } = req.body;
+        if (!title || !icone || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -20,7 +20,7 @@ class ServicoController {
                 seq: nextSeq,
                 title,
                 icone,
-                cidadeId: cidade
+                cidadeId: cidadeId
             });
             await ServicoRep_1.ServicoRep.save(servico);
             return res.status(201).json('Registered successfully!');
@@ -34,8 +34,8 @@ class ServicoController {
         }
     }
     async update(req, res) {
-        const { seq, title, icone, cidade } = req.body;
-        if (!seq || !title || !icone || !cidade) {
+        const { seq, title, icone, cidadeId } = req.body;
+        if (!seq || !title || !icone || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         if (isNaN(seq)) {
@@ -50,7 +50,7 @@ class ServicoController {
             }
             servico.title = title;
             servico.icone = icone;
-            servico.cidadeId = cidade;
+            servico.cidadeId = cidadeId;
             await ServicoRep_1.ServicoRep.save(servico);
             return res.status(200).json('Updated successfully!');
         }

@@ -5,8 +5,8 @@ import { Request, Response } from 'express';
 
 export class ServicoController {
     async create(req: Request, res: Response) {
-        const { title, icone, cidade } = req.body;
-        if (!title || !icone || !cidade) {
+        const { title, icone, cidadeId } = req.body;
+        if (!title || !icone || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -22,7 +22,7 @@ export class ServicoController {
                 seq: nextSeq,
                 title,
                 icone,
-                cidadeId: cidade
+                cidadeId: cidadeId
             });
 
             await ServicoRep.save(servico);
@@ -36,8 +36,8 @@ export class ServicoController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, title, icone, cidade } = req.body;
-        if ( !seq || !title || !icone || !cidade) {
+        const { seq, title, icone, cidadeId } = req.body;
+        if ( !seq || !title || !icone || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }        
         if (isNaN(seq)) {
@@ -54,7 +54,7 @@ export class ServicoController {
         }
         servico.title  = title;
         servico.icone  = icone;
-        servico.cidadeId = cidade   
+        servico.cidadeId = cidadeId   
 
         await ServicoRep.save(servico);
 

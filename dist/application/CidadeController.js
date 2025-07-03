@@ -5,8 +5,8 @@ const CidadeRep_1 = require("../repository/CidadeRep");
 const data_source_1 = require("../data-source");
 class CidadeController {
     async create(req, res) {
-        const { descricao, estadoId, dominio } = req.body;
-        if (!descricao || !estadoId || dominio) {
+        const { descricao, estado, dominio } = req.body;
+        if (!descricao || !estado || dominio) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -20,7 +20,7 @@ class CidadeController {
                 seq: nextSeq,
                 dominio,
                 descricao,
-                estadoId: estadoId
+                estadoId: estado
             });
             await CidadeRep_1.CidadeRep.save(cidade);
             return res.status(201).json('Registered successfully!');
@@ -34,8 +34,8 @@ class CidadeController {
         }
     }
     async update(req, res) {
-        const { seq, descricao, estadoId } = req.body;
-        if (!seq || !descricao || !estadoId) {
+        const { seq, descricao, estado } = req.body;
+        if (!seq || !descricao || !estado) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         if (isNaN(seq)) {
@@ -48,10 +48,8 @@ class CidadeController {
             if (!cidade) {
                 return res.status(404).json({ message: "Not found." });
             }
-            if (cidade.descricao)
-                cidade.descricao = descricao;
-            if (cidade.estadoId)
-                cidade.estadoId = estadoId;
+            cidade.descricao = descricao;
+            cidade.estadoId = estado;
             await CidadeRep_1.CidadeRep.save(cidade);
             return res.status(200).json('Updated successfully!');
         }
