@@ -82,10 +82,11 @@ class CidadeController {
     }
     async findall(req, res) {
         try {
-            const cidade = await CidadeRep_1.CidadeRep.find({
-                relations: ['estado'],
-                order: { descricao: 'ASC' },
-            });
+            const cidade = await CidadeRep_1.CidadeRep.createQueryBuilder('cidade')
+                .leftJoinAndSelect('cidade.estado', 'estado')
+                .orderBy('estado.descricao', 'ASC')
+                .addOrderBy('cidade.descricao', 'ASC')
+                .getMany();
             if (!cidade || cidade.length === 0) {
                 return res.status(404).json({ message: "No records found." });
             }
