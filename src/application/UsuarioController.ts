@@ -3,6 +3,8 @@ import { RolesRep } from '../repository/RolesRep';
 import { AppDataSource } from '../data-source';
 
 import { Request, Response } from 'express';
+import { Cidade } from '../domain/Cidade';
+import { Usuario } from '../domain/Usuario';
 const bcrypt = require('bcryptjs');
 
 export class UsuarioController {
@@ -152,6 +154,7 @@ export class UsuarioController {
                 email: usuario.email,
                 username: usuario.username,
                 fullname: usuario.fullname,
+                cidade: usuario.cidade,
                 roles: usuario.roles ? usuario.roles.map(role => role.descricao) : []
             }));
 

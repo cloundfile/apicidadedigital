@@ -135,6 +135,7 @@ class UsuarioController {
                 email: usuario.email,
                 username: usuario.username,
                 fullname: usuario.fullname,
+                cidade: usuario.cidade,
                 roles: usuario.roles ? usuario.roles.map(role => role.descricao) : []
             }));
             return res.json(response);
