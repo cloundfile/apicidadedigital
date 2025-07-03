@@ -23,7 +23,7 @@ export class Emprego {
     cidadeId: number;
 
     @ManyToOne(() => Cidade)
-    @JoinColumn({ name: 'SERVICE', referencedColumnName: 'seq' })
+    @JoinColumn({ name: 'SERVICO', referencedColumnName: 'seq' })
     servico: Servico;
 
     @ManyToOne(() => Cidade)

@@ -92,7 +92,7 @@ export class EmpregoController {
 
     async findall(req: Request, res: Response) {
         try {
-            const cidadeId = Number(req.query.cidade);
+            const cidadeId  = Number(req.query.cidade);
             const servicoId = Number(req.query.servico);
 
             if (isNaN(cidadeId) || isNaN(servicoId)) {
@@ -102,7 +102,7 @@ export class EmpregoController {
             const emprego = await EmpregoRep.find({
                 relations: ['cidade', 'servico'],
                 where: { cidadeId, servicoId },
-                order: { cargo: 'ASC' }
+                order: { seq: 'ASC' }
             });
 
             if (!emprego || emprego.length === 0) {

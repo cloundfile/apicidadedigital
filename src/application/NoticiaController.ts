@@ -5,8 +5,8 @@ import { Request, Response } from 'express';
 
 export class NoticiasController {
     async create(req: Request, res: Response) {
-        const { title, thumbnail, description, weblink, cidadeId } = req.body;
-        if (!title || !thumbnail || !description || !weblink || !cidadeId) {
+        const { title, thumbnail, description, weblink, servicoId, cidadeId } = req.body;
+        if (!title || !thumbnail || !description || !weblink || !servicoId || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -24,7 +24,8 @@ export class NoticiasController {
                 weblink,
                 thumbnail,
                 description,
-                cidadeId: cidadeId
+                cidadeId: cidadeId,
+                servicoId: servicoId
             });
 
             await NoticiaRep.save(noticia);
@@ -38,8 +39,8 @@ export class NoticiasController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, title, thumbnail, description, weblink, cidadeId } = req.body;
-        if (!seq || !title || !thumbnail || !description || !weblink || !cidadeId) {
+        const { seq, title, thumbnail, description, weblink, servicoId, cidadeId } = req.body;
+        if (!seq || !title || !thumbnail || !description || !weblink || !servicoId || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
 
@@ -51,11 +52,12 @@ export class NoticiasController {
             if (!noticia) {
                 return res.status(404).json({ message: "Not found." });
             }
-            noticia.title = title;
-            noticia.weblink = weblink;
-            noticia.thumbnail = thumbnail;
-            noticia.description = description;
-            noticia.cidadeId = cidadeId;
+            if(title)       noticia.title = title;
+            if(weblink)     noticia.weblink = weblink;
+            if(thumbnail)   noticia.thumbnail = thumbnail;
+            if(description) noticia.description = description;
+            if(servicoId)   noticia.servicoId = servicoId;
+            if(cidadeId)    noticia.cidadeId = cidadeId;
             await NoticiaRep.save(noticia);
 
             return res.status(200).json('Updated successfully!');
@@ -92,14 +94,16 @@ export class NoticiasController {
 
     async findall(req: Request, res: Response) {
         try {
-            const seq = Number(req.query.cidade);
-            if (isNaN(seq)) {
-                return res.status(400).json({ message: "Invalid or missing 'cidade' parameter." });
+            const cidadeId  = Number(req.query.cidade);
+            const servicoId = Number(req.query.servico);
+
+            if (isNaN(cidadeId) || isNaN(servicoId)) {
+                return res.status(400).json({ message: "Invalid or missing 'cidade' or 'servico' parameter." });
             }
 
             const noticias = await NoticiaRep.find({
-                relations: ['cidade'],
-                where: { cidadeId: seq },
+                relations: ['cidade', 'servico'],
+                 where: { cidadeId, servicoId },
                 order: { publish: 'ASC' }
             });
 

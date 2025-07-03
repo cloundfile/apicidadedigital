@@ -42,7 +42,7 @@ __decorate([
 ], Emprego.prototype, "cidadeId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Cidade_1.Cidade),
-    (0, typeorm_1.JoinColumn)({ name: 'SERVICE', referencedColumnName: 'seq' }),
+    (0, typeorm_1.JoinColumn)({ name: 'SERVICO', referencedColumnName: 'seq' }),
     __metadata("design:type", Servico_1.Servico)
 ], Emprego.prototype, "servico", void 0);
 __decorate([

@@ -5,8 +5,8 @@ const NoticiasRep_1 = require("../repository/NoticiasRep");
 const data_source_1 = require("../data-source");
 class NoticiasController {
     async create(req, res) {
-        const { title, thumbnail, description, weblink, cidadeId } = req.body;
-        if (!title || !thumbnail || !description || !weblink || !cidadeId) {
+        const { title, thumbnail, description, weblink, servicoId, cidadeId } = req.body;
+        if (!title || !thumbnail || !description || !weblink || !servicoId || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -22,7 +22,8 @@ class NoticiasController {
                 weblink,
                 thumbnail,
                 description,
-                cidadeId: cidadeId
+                cidadeId: cidadeId,
+                servicoId: servicoId
             });
             await NoticiasRep_1.NoticiaRep.save(noticia);
             return res.status(201).json('Registered successfully!');
@@ -36,8 +37,8 @@ class NoticiasController {
         }
     }
     async update(req, res) {
-        const { seq, title, thumbnail, description, weblink, cidadeId } = req.body;
-        if (!seq || !title || !thumbnail || !description || !weblink || !cidadeId) {
+        const { seq, title, thumbnail, description, weblink, servicoId, cidadeId } = req.body;
+        if (!seq || !title || !thumbnail || !description || !weblink || !servicoId || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -47,11 +48,18 @@ class NoticiasController {
             if (!noticia) {
                 return res.status(404).json({ message: "Not found." });
             }
-            noticia.title = title;
-            noticia.weblink = weblink;
-            noticia.thumbnail = thumbnail;
-            noticia.description = description;
-            noticia.cidadeId = cidadeId;
+            if (title)
+                noticia.title = title;
+            if (weblink)
+                noticia.weblink = weblink;
+            if (thumbnail)
+                noticia.thumbnail = thumbnail;
+            if (description)
+                noticia.description = description;
+            if (servicoId)
+                noticia.servicoId = servicoId;
+            if (cidadeId)
+                noticia.cidadeId = cidadeId;
             await NoticiasRep_1.NoticiaRep.save(noticia);
             return res.status(200).json('Updated successfully!');
         }
@@ -82,13 +90,14 @@ class NoticiasController {
     }
     async findall(req, res) {
         try {
-            const seq = Number(req.query.cidade);
-            if (isNaN(seq)) {
-                return res.status(400).json({ message: "Invalid or missing 'cidade' parameter." });
+            const cidadeId = Number(req.query.cidade);
+            const servicoId = Number(req.query.servico);
+            if (isNaN(cidadeId) || isNaN(servicoId)) {
+                return res.status(400).json({ message: "Invalid or missing 'cidade' or 'servico' parameter." });
             }
             const noticias = await NoticiasRep_1.NoticiaRep.find({
-                relations: ['cidade'],
-                where: { cidadeId: seq },
+                relations: ['cidade', 'servico'],
+                where: { cidadeId, servicoId },
                 order: { publish: 'ASC' }
             });
             if (!noticias || noticias.length === 0) {

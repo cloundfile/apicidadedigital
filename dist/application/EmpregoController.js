@@ -94,7 +94,7 @@ class EmpregoController {
             const emprego = await EmpregoRep_1.EmpregoRep.find({
                 relations: ['cidade', 'servico'],
                 where: { cidadeId, servicoId },
-                order: { cargo: 'ASC' }
+                order: { seq: 'ASC' }
             });
             if (!emprego || emprego.length === 0) {
                 return res.status(404).json({ message: "No records found." });
