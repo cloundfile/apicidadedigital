@@ -5,8 +5,8 @@ import { Request, Response } from 'express';
 
 export class CidadeController {
     async create(req: Request, res: Response) {
-        const { descricao, estado, dominio } = req.body;
-        if (!descricao || !estado || dominio) {
+        const { descricao, estadoId, dominio } = req.body;
+        if (!descricao || !estadoId || dominio) {
             return res.status(400).json({ message: "Fields with * required." });
         }
         try {
@@ -22,7 +22,7 @@ export class CidadeController {
                 seq: nextSeq,
                 dominio,
                 descricao,
-                estadoId: estado
+                estadoId: estadoId
             });
 
             await CidadeRep.save(cidade);
@@ -36,8 +36,8 @@ export class CidadeController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, descricao, estado } = req.body;
-        if ( !seq ||  !descricao || !estado) {
+        const { seq, descricao, estadoId } = req.body;
+        if ( !seq ||  !descricao || !estadoId) {
             return res.status(400).json({ message: "Fields with * required." });
         }        
         if (isNaN(seq)) {
@@ -53,7 +53,7 @@ export class CidadeController {
             return res.status(404).json({ message: "Not found." });
         }
         cidade.descricao = descricao;
-        cidade.estadoId = estado;   
+        cidade.estadoId = estadoId;   
 
         await CidadeRep.save(cidade);
 
