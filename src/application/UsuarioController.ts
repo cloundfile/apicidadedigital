@@ -7,9 +7,9 @@ const bcrypt = require('bcryptjs');
 
 export class UsuarioController {
     async create(req: Request, res: Response) {
-        const { username, password, telefone, roles } = req.body;
-        if (!username || !password || !telefone || !roles) {
-            return res.status(400).json({ message: "Fields with * required." });
+        const { fullname, username, password, email, phone, cidade, roles } = req.body;
+        if (!fullname || !username || !password || !email || !phone || !cidade || !roles) {
+            return res.status(400).json({ message: "Fields with fulname, username, password, email, phone, cidade, roles as required." });
         }
         const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -35,9 +35,12 @@ export class UsuarioController {
 
             const usuario = UsuarioRep.create({
                 seq: nextSeq,
+                fullname,
                 username,
                 password: hashedPassword,
-                telefone,
+                email,
+                phone,
+                cidade: cidade,
                 roles: roleEntities,
             });
 
@@ -56,10 +59,10 @@ export class UsuarioController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, username, password, telefone, roles } = req.body;
+        const { seq, fullname, username, password, email, phone, cidade, roles } = req.body;
 
-        if (!seq || !username || !roles || !Array.isArray(roles)) {
-            return res.status(400).json({ message: "Fields with * required and roles must be an array." });
+        if (!seq || !fullname || !username || !password || !email || !phone || !cidade || !roles || !Array.isArray(roles)) {
+            return res.status(400).json({ message: "Fields with seq, fullname, username, password, email, phone, cidade, roles as required and roles must be an array." });
         }
 
         try {
@@ -68,17 +71,13 @@ export class UsuarioController {
             relations: ['roles'],
         });
 
-        if (!usuario) {
-            return res.status(404).json({ message: "User not found." });
-        }
+        if(!usuario) return res.status(404).json({ message: "User not found." });
 
-        usuario.username = username;
-        if (telefone) usuario.telefone = telefone;
-
-        if (password) {
-            usuario.password = bcrypt.hashSync(password, 10);
-        }
-
+        if(email)       usuario.email = email;
+        if(phone)       usuario.phone = phone;
+        if(username)    usuario.username = username;
+        if(fullname)       usuario.fullname = fullname;
+        if(password)    usuario.password = bcrypt.hashSync(password, 10);
 
         const roleEntities = await Promise.all(
             roles.map(async (r: { id: number }) => {
@@ -94,8 +93,10 @@ export class UsuarioController {
 
         return res.status(200).json({
             seq: usuario.seq,
+            email: usuario.email,
+            phone: usuario.phone,
             username: usuario.username,
-            telefone: usuario.telefone,
+            fullname: usuario.fullname,
             roles: usuario.roles.map(role => role.descricao),
         });
 
@@ -147,7 +148,10 @@ export class UsuarioController {
 
             const response = usuarios.map(usuario => ({
                 seq: usuario.seq,
+                phone: usuario.phone,
+                email: usuario.email,
                 username: usuario.username,
+                fullname: usuario.fullname,
                 roles: usuario.roles ? usuario.roles.map(role => role.descricao) : []
             }));
 

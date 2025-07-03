@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Usuario = void 0;
 const typeorm_1 = require("typeorm");
 const Role_1 = require("./Role");
+const Cidade_1 = require("./Cidade");
 let Usuario = class Usuario {
 };
 exports.Usuario = Usuario;
@@ -20,25 +21,25 @@ __decorate([
     __metadata("design:type", Number)
 ], Usuario.prototype, "seq", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'USERNAME', type: 'varchar2', length: 255, nullable: false }),
+    (0, typeorm_1.Column)({ name: 'FULLNAME', type: 'varchar2', length: 255 }),
+    __metadata("design:type", String)
+], Usuario.prototype, "fullname", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'USERNAME', type: 'varchar2', length: 255 }),
     __metadata("design:type", String)
 ], Usuario.prototype, "username", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'PASSWORD', type: 'varchar2', length: 255, nullable: false }),
+    (0, typeorm_1.Column)({ name: 'PASSWORD', type: 'varchar2', length: 255 }),
     __metadata("design:type", String)
 ], Usuario.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'TELEFONE', type: 'number', precision: 12, nullable: false }),
-    __metadata("design:type", Number)
-], Usuario.prototype, "telefone", void 0);
+    (0, typeorm_1.Column)({ name: 'EMAIL', type: 'varchar2', length: 255 }),
+    __metadata("design:type", String)
+], Usuario.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)({
-        name: 'PUBLISH',
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP'
-    }),
-    __metadata("design:type", Date)
-], Usuario.prototype, "publish", void 0);
+    (0, typeorm_1.Column)({ name: 'PHONE', type: 'number', precision: 12 }),
+    __metadata("design:type", Number)
+], Usuario.prototype, "phone", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => Role_1.Role),
     (0, typeorm_1.JoinTable)({
@@ -48,6 +49,19 @@ __decorate([
     }),
     __metadata("design:type", Array)
 ], Usuario.prototype, "roles", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'CIDADE', type: 'number' }),
+    __metadata("design:type", Number)
+], Usuario.prototype, "cidadeId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Cidade_1.Cidade),
+    (0, typeorm_1.JoinColumn)({ name: 'CIDADE', referencedColumnName: 'seq' }),
+    __metadata("design:type", Cidade_1.Cidade)
+], Usuario.prototype, "cidade", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ name: 'PUBLISH', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
+    __metadata("design:type", Date)
+], Usuario.prototype, "publish", void 0);
 exports.Usuario = Usuario = __decorate([
     (0, typeorm_1.Entity)('USUARIO')
 ], Usuario);
