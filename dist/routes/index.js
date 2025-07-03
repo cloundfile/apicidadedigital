@@ -6,6 +6,7 @@ const Authentication_1 = require("../application/Authentication");
 const RoleController_1 = require("../application/RoleController");
 const login_1 = require("../middlewares/login");
 const express_1 = require("express");
+const ServicoController_1 = require("../application/ServicoController");
 const CidadeController_1 = require("../application/CidadeController");
 const EstadoController_1 = require("../application/EstadoController");
 const VagasController_1 = require("../application/VagasController");
@@ -13,6 +14,7 @@ const routes = (0, express_1.Router)();
 const authentication = new Authentication_1.Authentication();
 const usuario = new UsuarioController_1.UsuarioController();
 const roles = new RoleController_1.RoleController();
+const servicos = new ServicoController_1.ServicoController();
 const estados = new EstadoController_1.EstadoController();
 const cidades = new CidadeController_1.CidadeController();
 const noticias = new NoticiaController_1.NoticiasController();
@@ -39,6 +41,11 @@ routes.get('/v1/cidades/findall', cidades.findall);
 routes.post('/v1/cidades/create', login_1.required, cidades.create);
 routes.put('/v1/cidades/update', login_1.required, cidades.update);
 routes.delete('/v1/cidades/delete', login_1.required, cidades.delete);
+//Servicos
+routes.get('/v1/servicos/findall', servicos.findall);
+routes.post('/v1/servicos/create', login_1.required, servicos.create);
+routes.put('/v1/servicos/update', login_1.required, servicos.update);
+routes.delete('/v1/servicos/delete', login_1.required, servicos.delete);
 //Noticias
 routes.get('/v1/noticias/findall', noticias.findall);
 routes.post('/v1/noticias/create', login_1.required, noticias.create);

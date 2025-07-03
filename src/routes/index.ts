@@ -5,6 +5,7 @@ import { RoleController } from '../application/RoleController';
 import { required } from '../middlewares/login';
 import { Router } from 'express';
 
+import { ServicoController } from '../application/ServicoController';
 import { CidadeController } from '../application/CidadeController';
 import { EstadoController } from '../application/EstadoController';
 import { VagasController } from '../application/VagasController';
@@ -15,6 +16,7 @@ const authentication = new Authentication();
 const usuario = new UsuarioController();
 const roles = new RoleController();
 
+const servicos = new ServicoController();
 const estados = new EstadoController();
 const cidades = new CidadeController();
 const noticias = new NoticiasController();
@@ -28,7 +30,6 @@ routes.post('/v1/usuario/create',   required, usuario.create);
 routes.put('/v1/usuario/update',    required, usuario.update);
 routes.delete('/v1/usuario/delete', required, usuario.delete);
 routes.get('/v1/usuario/findall',   required, usuario.findall);
-
 
 //Roles
 routes.get('/v1/roles/findall',   required, roles.findAll);
@@ -48,6 +49,12 @@ routes.post('/v1/cidades/create',   required, cidades.create);
 routes.put('/v1/cidades/update',    required, cidades.update);
 routes.delete('/v1/cidades/delete', required, cidades.delete);
 
+//Servicos
+routes.get('/v1/servicos/findall',   servicos.findall);
+routes.post('/v1/servicos/create',   required, servicos.create);
+routes.put('/v1/servicos/update',    required, servicos.update);
+routes.delete('/v1/servicos/delete', required, servicos.delete);
+
 //Noticias
 routes.get('/v1/noticias/findall',   noticias.findall);
 routes.post('/v1/noticias/create',   required, noticias.create);
@@ -59,4 +66,6 @@ routes.get('/v1/vagas/findall',   vagas.findall);
 routes.post('/v1/vagas/create',   required, vagas.create);
 routes.put('/v1/vagas/update',    required, vagas.update);
 routes.delete('/v1/vagas/delete', required, vagas.delete);
+
+
 export default routes
