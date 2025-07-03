@@ -9,7 +9,7 @@ const express_1 = require("express");
 const ServicoController_1 = require("../application/ServicoController");
 const CidadeController_1 = require("../application/CidadeController");
 const EstadoController_1 = require("../application/EstadoController");
-const VagasController_1 = require("../application/VagasController");
+const EmpregoController_1 = require("../application/EmpregoController");
 const routes = (0, express_1.Router)();
 const authentication = new Authentication_1.Authentication();
 const usuario = new UsuarioController_1.UsuarioController();
@@ -18,11 +18,11 @@ const servicos = new ServicoController_1.ServicoController();
 const estados = new EstadoController_1.EstadoController();
 const cidades = new CidadeController_1.CidadeController();
 const noticias = new NoticiaController_1.NoticiasController();
-const vagas = new VagasController_1.VagasController();
+const empregos = new EmpregoController_1.EmpregoController();
 //Login authentication
 routes.post('/auth/login', authentication.login);
 //Usuario
-routes.post('/v1/usuario/create', login_1.required, usuario.create);
+routes.post('/v1/usuario/create', usuario.create);
 routes.put('/v1/usuario/update', login_1.required, usuario.update);
 routes.delete('/v1/usuario/delete', login_1.required, usuario.delete);
 routes.get('/v1/usuario/findall', login_1.required, usuario.findall);
@@ -51,9 +51,9 @@ routes.get('/v1/noticias/findall', noticias.findall);
 routes.post('/v1/noticias/create', login_1.required, noticias.create);
 routes.put('/v1/noticias/update', login_1.required, noticias.update);
 routes.delete('/v1/noticias/delete', login_1.required, noticias.delete);
-//Vagas
-routes.get('/v1/vagas/findall', vagas.findall);
-routes.post('/v1/vagas/create', login_1.required, vagas.create);
-routes.put('/v1/vagas/update', login_1.required, vagas.update);
-routes.delete('/v1/vagas/delete', login_1.required, vagas.delete);
+//Empregos
+routes.get('/v1/empregos/findall', empregos.findall);
+routes.post('/v1/empregos/create', login_1.required, empregos.create);
+routes.put('/v1/empregos/update', login_1.required, empregos.update);
+routes.delete('/v1/empregos/delete', login_1.required, empregos.delete);
 exports.default = routes;

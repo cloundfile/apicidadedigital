@@ -8,7 +8,7 @@ import { Router } from 'express';
 import { ServicoController } from '../application/ServicoController';
 import { CidadeController } from '../application/CidadeController';
 import { EstadoController } from '../application/EstadoController';
-import { VagasController } from '../application/VagasController';
+import { EmpregoController } from '../application/EmpregoController';
 
 const routes = Router();
 
@@ -20,13 +20,13 @@ const servicos = new ServicoController();
 const estados = new EstadoController();
 const cidades = new CidadeController();
 const noticias = new NoticiasController();
-const vagas = new VagasController();
+const empregos = new EmpregoController();
 
 //Login authentication
 routes.post('/auth/login',          authentication.login);
 
 //Usuario
-routes.post('/v1/usuario/create',   required, usuario.create);
+routes.post('/v1/usuario/create',   usuario.create);
 routes.put('/v1/usuario/update',    required, usuario.update);
 routes.delete('/v1/usuario/delete', required, usuario.delete);
 routes.get('/v1/usuario/findall',   required, usuario.findall);
@@ -61,11 +61,11 @@ routes.post('/v1/noticias/create',   required, noticias.create);
 routes.put('/v1/noticias/update',    required, noticias.update);
 routes.delete('/v1/noticias/delete', required, noticias.delete);
 
-//Vagas
-routes.get('/v1/vagas/findall',   vagas.findall);
-routes.post('/v1/vagas/create',   required, vagas.create);
-routes.put('/v1/vagas/update',    required, vagas.update);
-routes.delete('/v1/vagas/delete', required, vagas.delete);
+//Empregos
+routes.get('/v1/empregos/findall',   empregos.findall);
+routes.post('/v1/empregos/create',   required, empregos.create);
+routes.put('/v1/empregos/update',    required, empregos.update);
+routes.delete('/v1/empregos/delete', required, empregos.delete);
 
 
 export default routes

@@ -123,7 +123,7 @@ class UsuarioController {
     async findall(req, res) {
         try {
             const usuarios = await UsuarioRep_1.UsuarioRep.find({
-                relations: ['roles'],
+                relations: ['roles', 'cidade'],
                 order: { username: 'ASC' },
             });
             if (!usuarios || usuarios.length === 0) {

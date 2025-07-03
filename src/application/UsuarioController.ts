@@ -3,8 +3,6 @@ import { RolesRep } from '../repository/RolesRep';
 import { AppDataSource } from '../data-source';
 
 import { Request, Response } from 'express';
-import { Cidade } from '../domain/Cidade';
-import { Usuario } from '../domain/Usuario';
 const bcrypt = require('bcryptjs');
 
 export class UsuarioController {
@@ -140,9 +138,9 @@ export class UsuarioController {
     async findall(req: Request, res: Response) {
         try {
             const usuarios = await UsuarioRep.find({ 
-                relations: ['roles'],
+                relations: ['roles', 'cidade'],
                 order: { username: 'ASC' },
-            });
+            });            
 
             if (!usuarios || usuarios.length === 0) {
                 return res.status(404).json({ message: "No records found." });
@@ -157,6 +155,7 @@ export class UsuarioController {
                 cidade: usuario.cidade,
                 roles: usuario.roles ? usuario.roles.map(role => role.descricao) : []
             }));
+            
 
             return res.json(response);
 
