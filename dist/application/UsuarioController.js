@@ -7,8 +7,8 @@ const data_source_1 = require("../data-source");
 const bcrypt = require('bcryptjs');
 class UsuarioController {
     async create(req, res) {
-        const { fullname, username, password, email, phone, cidade, roles } = req.body;
-        if (!fullname || !username || !password || !email || !phone || !cidade || !roles) {
+        const { fullname, username, password, email, phone, cidadeId, roles } = req.body;
+        if (!fullname || !username || !password || !email || !phone || !cidadeId || !roles) {
             return res.status(400).json({ message: "Fields with fulname, username, password, email, phone, cidade, roles as required." });
         }
         const hashedPassword = bcrypt.hashSync(password, 10);
@@ -35,7 +35,7 @@ class UsuarioController {
                 password: hashedPassword,
                 email,
                 phone,
-                cidade: cidade,
+                cidadeId: cidadeId,
                 roles: roleEntities,
             });
             await UsuarioRep_1.UsuarioRep.save(usuario);
@@ -53,8 +53,8 @@ class UsuarioController {
         }
     }
     async update(req, res) {
-        const { seq, fullname, username, password, email, phone, cidade, roles } = req.body;
-        if (!seq || !fullname || !username || !password || !email || !phone || !cidade || !roles || !Array.isArray(roles)) {
+        const { seq, fullname, username, password, email, phone, roles } = req.body;
+        if (!seq || !fullname || !username || !password || !email || !phone || !roles || !Array.isArray(roles)) {
             return res.status(400).json({ message: "Fields with seq, fullname, username, password, email, phone, cidade, roles as required and roles must be an array." });
         }
         try {

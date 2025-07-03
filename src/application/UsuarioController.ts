@@ -7,8 +7,8 @@ const bcrypt = require('bcryptjs');
 
 export class UsuarioController {
     async create(req: Request, res: Response) {
-        const { fullname, username, password, email, phone, cidade, roles } = req.body;
-        if (!fullname || !username || !password || !email || !phone || !cidade || !roles) {
+        const { fullname, username, password, email, phone, cidadeId, roles } = req.body;
+        if (!fullname || !username || !password || !email || !phone || !cidadeId || !roles) {
             return res.status(400).json({ message: "Fields with fulname, username, password, email, phone, cidade, roles as required." });
         }
         const hashedPassword = bcrypt.hashSync(password, 10);
@@ -40,7 +40,7 @@ export class UsuarioController {
                 password: hashedPassword,
                 email,
                 phone,
-                cidade: cidade,
+                cidadeId: cidadeId,
                 roles: roleEntities,
             });
 
@@ -59,9 +59,9 @@ export class UsuarioController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, fullname, username, password, email, phone, cidade, roles } = req.body;
+        const { seq, fullname, username, password, email, phone, roles } = req.body;
 
-        if (!seq || !fullname || !username || !password || !email || !phone || !cidade || !roles || !Array.isArray(roles)) {
+        if (!seq || !fullname || !username || !password || !email || !phone || !roles || !Array.isArray(roles)) {
             return res.status(400).json({ message: "Fields with seq, fullname, username, password, email, phone, cidade, roles as required and roles must be an array." });
         }
 
@@ -76,7 +76,7 @@ export class UsuarioController {
         if(email)       usuario.email = email;
         if(phone)       usuario.phone = phone;
         if(username)    usuario.username = username;
-        if(fullname)       usuario.fullname = fullname;
+        if(fullname)    usuario.fullname = fullname;
         if(password)    usuario.password = bcrypt.hashSync(password, 10);
 
         const roleEntities = await Promise.all(
