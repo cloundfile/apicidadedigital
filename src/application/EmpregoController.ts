@@ -39,9 +39,9 @@ export class EmpregoController {
     }
 
     async update(req: Request, res: Response) {
-        const { seq, cargo, quantidade, requisitos, fechada, servicoId, cidadeId } = req.body;
+        const { seq, cargo, quantidade, requisitos, fechada, cidadeId } = req.body;
 
-        if (!seq || !cargo || !quantidade || !requisitos || !servicoId || !cidadeId) {
+        if (!seq || !cargo || !quantidade || !requisitos || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
 
@@ -57,7 +57,6 @@ export class EmpregoController {
             if(requisitos) emprego.requisitos  = requisitos;
             if(fechada)    emprego.fechada = fechada;
             if(cidadeId)   emprego.cidadeId    = cidadeId;
-            if(servicoId)  emprego.servicoId   = servicoId;
 
             await EmpregoRep.save(emprego);
             return res.status(200).json('Updated successfully!');
@@ -96,7 +95,7 @@ export class EmpregoController {
             const cidadeId  = Number(req.query.cidade);
 
             if (isNaN(cidadeId)) {
-                return res.status(400).json({ message: "Invalid or missing 'cidade' or 'servico' parameter." });
+                return res.status(400).json({ message: "Invalid or missing 'cidade' parameter." });
             }
             
             const emprego = await EmpregoRep.find({
