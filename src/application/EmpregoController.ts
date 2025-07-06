@@ -99,7 +99,7 @@ export class EmpregoController {
             }
             
             const emprego = await EmpregoRep.find({
-                relations: ['cidade', 'servico'],
+                relations: ['cidade'],
                 where: { cidadeId, fechada: IsNull() },
                 order: { seq: 'ASC' }
             });

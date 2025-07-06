@@ -1,6 +1,5 @@
 import { NoticiaRep } from '../repository/NoticiasRep';
 import { AppDataSource } from '../data-source';
-
 import { Request, Response } from 'express';
 
 export class NoticiasController {
@@ -99,7 +98,7 @@ export class NoticiasController {
             }
 
             const noticias = await NoticiaRep.find({
-                relations: ['cidade', 'servico'],
+                relations: ['cidade'],
                  where: { cidadeId },
                 order: { publish: 'ASC' }
             });
