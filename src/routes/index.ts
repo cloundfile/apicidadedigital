@@ -7,7 +7,6 @@ import { Router } from 'express';
 
 import { CategoriaController } from '../application/CategoriaController';
 import { EmpregoController } from '../application/EmpregoController';
-import { WeatherController } from '../application/WeatherController';
 import { CidadeController } from '../application/CidadeController';
 import { EstadoController } from '../application/EstadoController';
 
@@ -21,7 +20,6 @@ const estados  = new EstadoController();
 const cidades  = new CidadeController();
 const noticias = new NoticiasController();
 const empregos = new EmpregoController();
-const weathers = new WeatherController();
 const categorias = new CategoriaController();
 
 //Login authentication
@@ -68,11 +66,5 @@ routes.get('/v1/empregos/findall',   empregos.findall);
 routes.post('/v1/empregos/create',   required, empregos.create);
 routes.put('/v1/empregos/update',    required, empregos.update);
 routes.delete('/v1/empregos/delete', required, empregos.delete);
-
-//Weathers
-routes.get('/v1/weathers/findall',   weathers.findall);
-routes.post('/v1/weathers/create',   required, weathers.create);
-routes.put('/v1/weathers/update',    required, weathers.update);
-routes.delete('/v1/weathers/delete', required, weathers.delete);
 
 export default routes

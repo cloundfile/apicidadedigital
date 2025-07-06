@@ -15,7 +15,7 @@ export class CategoriaController {
                 return res.status(400).json({ message: 'Already registered.' });
             }
 
-            const seqResult = await AppDataSource.query(`SELECT SEQ_SERVICO.NEXTVAL AS SEQ FROM DUAL`);
+            const seqResult = await AppDataSource.query(`SELECT SEQ_CATEGORIA.NEXTVAL AS SEQ FROM DUAL`);
             const nextSeq = seqResult[0].SEQ;
 
             const categoria = CategoriaRep.create({
