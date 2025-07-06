@@ -5,9 +5,9 @@ import { IsNull } from 'typeorm';
 
 export class EmpregoController {
     async create(req: Request, res: Response) {
-        const { cargo, quantidade, requisitos, servicoId, cidadeId } = req.body;
+        const { cargo, quantidade, requisitos, cidadeId } = req.body;
 
-        if (!cargo || !quantidade || !requisitos || !servicoId || !cidadeId) {
+        if (!cargo || !quantidade || !requisitos || !cidadeId) {
             return res.status(400).json({ message: "Fields with * required." });
         }
 
@@ -25,8 +25,7 @@ export class EmpregoController {
                 cargo,
                 quantidade,
                 requisitos,
-                cidadeId,
-                servicoId
+                cidadeId
             });
 
             await EmpregoRep.save(emprego);
@@ -95,15 +94,14 @@ export class EmpregoController {
     async findall(req: Request, res: Response) {
         try {
             const cidadeId  = Number(req.query.cidade);
-            const servicoId = Number(req.query.servico);
 
-            if (isNaN(cidadeId) || isNaN(servicoId)) {
+            if (isNaN(cidadeId)) {
                 return res.status(400).json({ message: "Invalid or missing 'cidade' or 'servico' parameter." });
             }
             
             const emprego = await EmpregoRep.find({
                 relations: ['cidade', 'servico'],
-                where: { cidadeId, servicoId, fechada: IsNull() },
+                where: { cidadeId, fechada: IsNull() },
                 order: { seq: 'ASC' }
             });
 

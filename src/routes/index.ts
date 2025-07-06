@@ -5,10 +5,11 @@ import { RoleController } from '../application/RoleController';
 import { required } from '../middlewares/login';
 import { Router } from 'express';
 
-import { ServicoController } from '../application/ServicoController';
+import { CategoriaController } from '../application/CategoriaController';
 import { CidadeController } from '../application/CidadeController';
 import { EstadoController } from '../application/EstadoController';
 import { EmpregoController } from '../application/EmpregoController';
+import { WeatherController } from '../application/WeatherController';
 
 const routes = Router();
 
@@ -16,11 +17,12 @@ const authentication = new Authentication();
 const usuario = new UsuarioController();
 const roles = new RoleController();
 
-const servicos = new ServicoController();
-const estados = new EstadoController();
-const cidades = new CidadeController();
+const estados  = new EstadoController();
+const cidades  = new CidadeController();
 const noticias = new NoticiasController();
 const empregos = new EmpregoController();
+const weathers = new WeatherController();
+const categorias = new CategoriaController();
 
 //Login authentication
 routes.post('/auth/login',          authentication.login);
@@ -49,11 +51,11 @@ routes.post('/v1/cidades/create',   required, cidades.create);
 routes.put('/v1/cidades/update',    required, cidades.update);
 routes.delete('/v1/cidades/delete', required, cidades.delete);
 
-//Servicos
-routes.get('/v1/servicos/findall',   servicos.findall);
-routes.post('/v1/servicos/create',   required, servicos.create);
-routes.put('/v1/servicos/update',    required, servicos.update);
-routes.delete('/v1/servicos/delete', required, servicos.delete);
+//Categorias
+routes.get('/v1/categorias/findall',   categorias.findall);
+routes.post('/v1/categorias/create',   required, categorias.create);
+routes.put('/v1/categorias/update',    required, categorias.update);
+routes.delete('/v1/categorias/delete', required, categorias.delete);
 
 //Noticias
 routes.get('/v1/noticias/findall',   noticias.findall);
@@ -67,5 +69,10 @@ routes.post('/v1/empregos/create',   required, empregos.create);
 routes.put('/v1/empregos/update',    required, empregos.update);
 routes.delete('/v1/empregos/delete', required, empregos.delete);
 
+//Weathers
+routes.get('/v1/weathers/findall',   weathers.findall);
+routes.post('/v1/weathers/create',   required, weathers.create);
+routes.put('/v1/weathers/update',    required, weathers.update);
+routes.delete('/v1/weathers/delete', required, weathers.delete);
 
 export default routes

@@ -1,17 +1,22 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import { Cidade } from './Cidade';
 
-@Entity('SERVICO')
-export class Servico {
-
+@Entity('WEATHER')
+export class Weather {
     @PrimaryColumn({ name: 'SEQ', type: 'number', precision: 19, scale: 2 })
     seq: number;
 
-    @Column({ name: 'TITLE', type: 'varchar2', length: 20 })
-    title: string;
+    @Column({ name: 'ICON', type: 'varchar2', length: 10, nullable: false })
+    icon: string;
 
-    @Column({ name: 'ICONE', type: 'varchar2', length: 50 })
-    icone: string;
+    @Column({ name: 'TEMP', type: 'number' })
+    temp: string;
+
+    @Column({ name: 'MAX', type: 'number'  })
+    max: string;
+
+    @Column({ name: 'MIN', type: 'number'  })
+    min: string;
 
     @Column({ name: 'CIDADE', type: 'number' })
     cidadeId: number;

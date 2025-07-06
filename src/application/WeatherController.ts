@@ -1,62 +1,73 @@
-import { ServicoRep } from '../repository/ServicoRep';
+import { WeatherRep } from '../repository/WeatherRep';
 import { AppDataSource } from '../data-source';
-
 import { Request, Response } from 'express';
 
-export class ServicoController {
+export class WeatherController {
     async create(req: Request, res: Response) {
-        const { title, icone, cidadeId } = req.body;
-        if (!title || !icone || !cidadeId) {
-            return res.status(400).json({ message: "Fields with * required." });
+        const { icon, temp, max, min, cidadeId } = req.body;
+        if (!icon || !temp || !max || !min || !cidadeId) {
+            return res.status(400).json({ message: "Fields with ( icon, temp, max, min, cidadeId ) required." });
         }
         try {
-            const unique = await ServicoRep.findOneBy({ title: title });
+            const unique = await WeatherRep.findOneBy({ cidadeId });
             if (unique) {
-                return res.status(400).json({ message: 'Already registered.' });
+                  const updateData = {
+                    seq: unique.seq,
+                    icon,
+                    temp,
+                    max,
+                    min,
+                    cidadeId
+                };
+                return this.update(req, res, updateData);
             }
 
-            const seqResult = await AppDataSource.query(`SELECT SEQ_SERVICO.NEXTVAL AS SEQ FROM DUAL`);
+            const seqResult = await AppDataSource.query(`SELECT SEQ_WEATHER.NEXTVAL AS SEQ FROM DUAL`);
             const nextSeq = seqResult[0].SEQ;
 
-            const servico = ServicoRep.create({
+            const weather = WeatherRep.create({
                 seq: nextSeq,
-                title,
-                icone,
+                icon,
+                temp,
+                max,
+                min,
                 cidadeId: cidadeId
             });
 
-            await ServicoRep.save(servico);
+            await WeatherRep.save( weather);
             return res.status(201).json('Registered successfully!');
         } catch (error) {
-            console.error("Creating user error:", error);
             return res.status(500).json({ message: 'Creating error', error: error });
         } finally {
             console.log('Registered successfully!');
         }
     }
 
-    async update(req: Request, res: Response) {
-        const { seq, title, icone, cidadeId } = req.body;
-        if ( !seq || !title || !icone || !cidadeId) {
-            return res.status(400).json({ message: "Fields with * required." });
-        }        
+    async update(req: Request, res: Response, updateData?: any) {
+        const { seq, icon, temp, max, min, cidadeId } = updateData || req.body;
+
+        if ( !seq || !icon || !temp || !max || !min || !cidadeId ) {
+            return res.status(400).json({ message: "Fields with ( seq, icon, temp, max, min, cidadeId ) required." });
+        }   
+            
         if (isNaN(seq)) {
             return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
         }
 
         try {
-        const servico = await ServicoRep.findOne({
-            where: { seq }
+        const weather = await WeatherRep.findOne({
+            where: { cidadeId  }
         });
 
-        if (!servico) {
+        if (!weather) {
             return res.status(404).json({ message: "Not found." });
         }
-        servico.title  = title;
-        servico.icone  = icone;
-        servico.cidadeId = cidadeId   
+        if(icon) weather.icon  = icon;
+        if(temp) weather.temp  = temp;
+        if(max)  weather.max   = max;
+        if(min)  weather.min   = min;
 
-        await ServicoRep.save(servico);
+        await WeatherRep.save(weather);
 
         return res.status(200).json('Updated successfully!');
 
@@ -74,13 +85,13 @@ export class ServicoController {
                 return res.status(400).json({ message: "Invalid or missing 'seq' parameter." });
             }
 
-            const servico = await ServicoRep.findOne({ where: { seq: Number(seq) } });
+            const weather = await WeatherRep.findOne({ where: { seq: Number(seq) } });
 
-            if (!servico) {
+            if (!weather) {
                 return res.status(404).json({ message: "Not found." });
             }
 
-            await ServicoRep.delete({ seq: Number(seq) });
+            await WeatherRep.delete({ seq: Number(seq) });
 
             return res.status(200).json({ message: "Successfully deleted." });
 
@@ -92,25 +103,23 @@ export class ServicoController {
 
     async findall(req: Request, res: Response) {
         try {
-            const seq = Number(req.query.cidade);
-            if (isNaN(seq)) {
+            const cidadeId = Number(req.query.cidade);
+            if (isNaN(cidadeId)) {
                 return res.status(400).json({ message: "Invalid or missing 'cidade' parameter." });
             }
 
-            const servicos = await ServicoRep.find({
+            const weather = await WeatherRep.findOne({
                 relations: ['cidade'],
-                where: { cidadeId: seq },
-                order: { title: 'ASC' }
+                where: { cidadeId }
             });
 
-            if (!servicos || servicos.length === 0) {
+            if (!weather) {
                 return res.status(404).json({ message: "No records found." });
             }
 
-            return res.json(servicos);
+            return res.json(weather);
 
         } catch (error) {
-            console.error(error);
             return res.status(500).json({ message: "Error fetching news", error: error });
         }
     }
