@@ -6,10 +6,10 @@ import { required } from '../middlewares/login';
 import { Router } from 'express';
 
 import { CategoriaController } from '../application/CategoriaController';
-import { CidadeController } from '../application/CidadeController';
-import { EstadoController } from '../application/EstadoController';
 import { EmpregoController } from '../application/EmpregoController';
 import { WeatherController } from '../application/WeatherController';
+import { CidadeController } from '../application/CidadeController';
+import { EstadoController } from '../application/EstadoController';
 
 const routes = Router();
 
